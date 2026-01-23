@@ -1,0 +1,104 @@
+header {
+    display: flex;
+    justify-content: center;
+}
+
+.titre {
+    font-size: 5rem;
+    color: var(--text-color);
+    font-family: var(--title-family);
+    text-transform: uppercase;
+
+    background-image: repeating-linear-gradient( /* dégradé texte couleur */
+        190deg,
+        rgb(239, 125, 125, 0.5) 40px,
+        rgb(243, 148, 139, 0.5) 80px,
+        rgb(247, 170, 154, 0.5) 120px,
+        rgb(250, 193, 167, 0.5) 160px,
+        rgb(255, 215, 181, 0.5) 200px
+    ),
+    repeating-linear-gradient(
+        -190deg,
+        rgb(239, 125, 125, 0.5) 30px,
+        rgb(243, 148, 139, 0.5) 60px,
+        rgb(247, 170, 154, 0.5) 90px,
+        rgb(250, 193, 167, 0.5) 120px,
+        rgb(255, 215, 181, 0.5) 150px
+    ),
+    repeating-linear-gradient(
+        45deg,
+        rgb(239, 125, 125) 50px,
+        rgb(243, 148, 139) 100px,
+        rgb(247, 170, 154) 150px,
+        rgb(250, 193, 167) 200px,
+        rgb(255, 215, 181) 250px
+    );
+    color: transparent;
+    background-clip: text;
+}
+
+#projets{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    justify-items: center;
+    gap: 70px;
+}
+
+.cards{
+    width: 60%;
+    height: fit-content;
+    background-color: var(--color4);
+    padding-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    border-radius: 10px;
+    border: 2px white;
+}
+
+.cards > img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.cards > img:hover {
+    transform: scale(1.075);
+    transition: 0.5s ease-in-out;
+}
+
+h2 {
+    margin-top: 13px;
+}
+
+h3 {
+    margin: 8px;
+}
+
+p {
+    text-align: center;
+}
+
+.bouton-git-site {
+    display: flex;
+    gap: 40px;
+    border-radius: 10px;
+}
+
+.btn {
+    padding: 8px;
+    margin: 10px;
+    font-size: 1.2rem;
+    background-color: var(--color2);
+    border-radius: 10px;
+    border: none;
+}
+
+.btn:hover {
+    cursor: pointer;
+    transform: scale(1.15);
+    transition: transform 0.5s linear;
+}
