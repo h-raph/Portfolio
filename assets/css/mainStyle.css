@@ -5,11 +5,11 @@
     --text-color : rgb(251, 251, 251);
     --title-family : "Zalando Sans Expanded", sans-serif;
     --text-family : "Inter", sans-serif;
-    --color1 : rgb(239, 125, 125);
-    --color2 : rgb(243, 148, 139);
-    --color3 : rgb(247, 170, 154);
-    --color4 : rgb(250, 193, 167);
-    --color5 : rgb(255, 215, 181);
+    --color1 : rgb(102, 3, 0);
+    --color2 : rgb(143, 5, 0);
+    --color3 : rgb(184, 6, 0);
+    --color4 : rgb(224, 7, 0);
+    --color5 : rgb(255, 18, 10);
 }
 
 *, *::before, *::after {
@@ -31,7 +31,7 @@ body {
     line-height: 1.6;
     padding: 20px;
 
-    background: 
+    /* background: 
     repeating-linear-gradient(
         190deg,
         rgb(3, 6, 99, 0.5) 40px,
@@ -42,23 +42,65 @@ body {
     ),
     repeating-linear-gradient(
         -190deg,
-        rgb(3, 99, 22,0.5) 30px,
-        rgb(7, 116, 30, 0.5) 60px,
-        rgb(11, 153, 37, 0.5) 90px,
-        rgb(9, 174, 39, 0.5) 120px,
-        rgb(11, 213, 48, 0.5) 150px
+        rgb(102, 3, 0, 0.5) 30px,
+        rgb(143, 5, 0, 0.5) 60px,
+        rgb(184, 6, 0, 0.5) 90px,
+        rgb(224, 7, 0, 0.5) 120px,
+        rgb(255, 18, 10, 0.5) 150px
     ),
     repeating-linear-gradient(
         45deg,
-        rgb(3, 99, 22) 50px,
-        rgb(7, 116, 30) 100px,
-        rgb(11, 153, 37) 150px,
-        rgb(9, 174, 39) 200px,
-        rgb(11, 213, 48) 250px
-    );
+        #030663 50px,
+        #4ecdc4 100px,
+        #f7fff7 150px,
+        #ff6b6b 200px,
+        #ffe66d 250px
+    ) */
 }
 
 header {
     display: flex;
     justify-content: center;
+    margin-bottom: 50px;
 }
+
+.titre {
+    font-size: 5rem;
+    letter-spacing: 4px;
+    font-family: var(--title-family);
+    text-transform: uppercase;
+
+    background-image: repeating-linear-gradient( /* dégradé texte couleur */
+        190deg,
+        rgb(102, 3, 0, 0.5) 40px,
+        rgb(143, 5, 0, 0.5) 80px,
+        rgb(184, 6, 0, 0.5) 120px,
+        rgb(224, 7, 0, 0.5) 160px,
+        rgb(255, 18, 10, 0.5) 200px
+    ),
+    repeating-linear-gradient(
+        -190deg,
+        rgb(102, 3, 0, 0.5) 30px,
+        rgb(143, 5, 0, 0.5) 60px,
+        rgb(184, 6, 0, 0.5) 90px,
+        rgb(224, 7, 0, 0.5) 120px,
+        rgb(255, 18, 10, 0.5) 150px
+    ),
+    repeating-linear-gradient(
+        45deg,
+        rgb(102, 3, 0) 50px,
+        rgb(143, 5, 0) 100px,
+        rgb(184, 6, 0) 150px,
+        rgb(224, 7, 0) 200px,
+        rgb(255, 18, 10) 250px
+    );
+    color: transparent;
+    background-clip: text;
+}
+/* 
+    #030663 50px,
+    #4ecdc4 100px,
+    #f7fff7 150px,
+    #ff6b6b 200px,
+    #ffe66d 250px
+*/

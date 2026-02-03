@@ -47,22 +47,25 @@ header.append(titre)
 body.appendChild(header)
 
 // =================SECTION=================
-const section = document.createElement("section")
+const main = document.createElement("main")
 
-section.setAttribute("id", "projets")
+main.setAttribute("id", "projets")
 
-body.append(section)
+body.append(main)
 
 // =================PROJETS=================
 for (let i = 0; i < projets.length; i++) {
+    // CREATION DES DIFFERENTES BALISES
     const cardsProjets = document.createElement('div')
+    const span = document.createElement('span')
     const boutonDiv = document.createElement('div')
     const imageProjets = document.createElement('img')
     const nomProjets = document.createElement('h2')
     const langage = document.createElement('h3')
     const boutonGitHub = document.createElement('button')
     const boutonSite = document.createElement('button')
-    
+
+    // AJOUT DE CLASSE
     cardsProjets.classList.add(`cards`, "projets-" + projets[i].class)
     boutonGitHub.classList.add('github')
     boutonGitHub.classList.add('btn')
@@ -70,19 +73,25 @@ for (let i = 0; i < projets.length; i++) {
     boutonSite.classList.add('btn')
     boutonDiv.classList.add('bouton-git-site')
 
+    // AJOUT D'ATTRIBUT
+    cardsProjets.setAttribute('style', '--i:' + i+1 + ';')
+
     imageProjets.src = projets[i].image
     imageProjets.setAttribute('alt', projets[i].nom)
 
     boutonGitHub.setAttribute('onclick', `window.open('${projets[i].github}')`)
     boutonSite.setAttribute('onclick', `window.open('${projets[i].site}')`)
 
+    // AJOUT DE TEXTE
     langage.textContent = projets[i].langage
     nomProjets.textContent = projets[i].nom
 
+    // AJOUTES LES BALISES AUX BALISES PARENTS
     boutonGitHub.append('GitHub')
     boutonSite.append('Voir la page')
     boutonDiv.append(boutonSite, boutonGitHub)
-    cardsProjets.append(imageProjets, nomProjets, langage, boutonDiv)
+    span.append(imageProjets, nomProjets, langage, boutonDiv)
+    cardsProjets.append(span)
 
-    section.append(cardsProjets)
+    main.append(cardsProjets)
 }
