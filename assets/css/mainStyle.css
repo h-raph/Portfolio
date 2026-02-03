@@ -57,3 +57,8 @@ body {
         rgb(241, 241, 211) 250px
     );
 }
+
+header {
+    display: flex;
+    justify-content: center;
+}

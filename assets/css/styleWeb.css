@@ -37,6 +37,7 @@ header {
     background-clip: text;
 }
 
+
 #projets{
     width: 100%;
     height: 100%;
@@ -120,8 +121,26 @@ h3 {
     color: var(--text-color);
 }
 
+.btn {
+    transition: transform 0.5s ease-in-out;
+}
+
 .btn:hover {
     cursor: pointer;
     transform: scale(1.15);
-    transition: transform 0.5s linear;
+}
+
+@media (max-width:1024px) {
+    .titre {
+        scale: 0.75;
+    }
+
+    #projets {
+        grid-template-columns:  repeat(1, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+    }
+
+    .cards {
+        width: 100%;
+    }
 }

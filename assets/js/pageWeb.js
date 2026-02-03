@@ -19,7 +19,7 @@ const projets = [
         nom: 'Site mariage',
         class: 'site-mariage',
         github: 'https://github.com/h-raph/Site-mariage.git',
-        site: 'http://127.0.0.1:5501/CSS/Exercices/TP%205/Mariage/enonce.html',
+        site: 'https://site-mariage-six.vercel.app/',
         image: '../assets/images/Mariage.png',
         langage: 'HTML & CSS',
     },
@@ -38,12 +38,14 @@ const body = document.getElementById("body")
 
 const header = document.createElement("header")
 const titre = document.createElement('h1')
+const losan = document.createElement('div')
 
 titre.classList.add('titre')
+losan.classList.add('losange')
 
 titre.textContent = "Mes projets"
 
-header.append(titre)
+header.append(losan, titre)
 body.appendChild(header)
 
 // =================SECTION=================
