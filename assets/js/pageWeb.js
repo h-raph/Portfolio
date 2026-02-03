@@ -6,7 +6,6 @@ const projets = [
         site: 'https://star-wars-trilogie.vercel.app/',
         image: '../assets/images/Star-wars.png',
         langage: 'HTML & CSS',
-        description: "J'avais pour exercice de cibler les bons sélecteurs dans le fichier css",
     },
     {
         nom: 'Collectif Rainbow Photo',
@@ -15,7 +14,6 @@ const projets = [
         site: 'https://collectif-rainbow-photo.vercel.app/',
         image: '../assets/images/Rainbow.png',
         langage: 'HTML & CSS',
-        description: "Je devais styliser la page d'accueil",
     },
     {
         nom: 'Site mariage',
@@ -24,7 +22,6 @@ const projets = [
         site: 'http://127.0.0.1:5501/CSS/Exercices/TP%205/Mariage/enonce.html',
         image: '../assets/images/Mariage.png',
         langage: 'HTML & CSS',
-        description: "Je devais styliser la page d'accueil"
     },
     {
         nom: 'Bibliothèque',
@@ -33,7 +30,6 @@ const projets = [
         site: 'https://bibliotheque-peach.vercel.app/',
         image : '../assets/images/Bibliotheque.png',
         langage: 'HTML, CSS & JS',
-        description: "Je devais écrire la page HTML mais dans le fichier JavaScript"
     }
 ]
 
@@ -64,7 +60,6 @@ for (let i = 0; i < projets.length; i++) {
     const imageProjets = document.createElement('img')
     const nomProjets = document.createElement('h2')
     const langage = document.createElement('h3')
-    const description = document.createElement('p')
     const boutonGitHub = document.createElement('button')
     const boutonSite = document.createElement('button')
     
@@ -83,12 +78,11 @@ for (let i = 0; i < projets.length; i++) {
 
     langage.textContent = projets[i].langage
     nomProjets.textContent = projets[i].nom
-    description.textContent = projets[i].description
 
     boutonGitHub.append('GitHub')
     boutonSite.append('Voir la page')
     boutonDiv.append(boutonSite, boutonGitHub)
-    cardsProjets.append(imageProjets, nomProjets, langage, description, boutonDiv)
+    cardsProjets.append(imageProjets, nomProjets, langage, boutonDiv)
 
     section.append(cardsProjets)
 }

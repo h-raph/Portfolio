@@ -50,13 +50,37 @@ header {
 .cards{
     width: 60%;
     height: fit-content;
-    background-color: var(--color4);
+    background:  repeating-linear-gradient(
+        190deg,
+        rgb(239, 125, 125, 0.5) 40px,
+        rgb(243, 148, 139, 0.5) 80px,
+        rgb(247, 170, 154, 0.5) 120px,
+        rgb(250, 193, 167, 0.5) 160px,
+        rgb(255, 215, 181, 0.5) 200px
+    ),
+    repeating-linear-gradient(
+        -190deg,
+        rgb(239, 125, 125, 0.5) 30px,
+        rgb(243, 148, 139, 0.5) 60px,
+        rgb(247, 170, 154, 0.5) 90px,
+        rgb(250, 193, 167, 0.5) 120px,
+        rgb(255, 215, 181, 0.5) 150px
+    ),
+    repeating-linear-gradient(
+        45deg,
+        rgb(239, 125, 125) 50px,
+        rgb(243, 148, 139) 100px,
+        rgb(247, 170, 154) 150px,
+        rgb(250, 193, 167) 200px,
+        rgb(255, 215, 181) 250px
+    );
+
     padding-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden;
-    border-radius: 10px;
+    border-radius: 20px;
     border: 2px white;
 }
 
@@ -72,14 +96,12 @@ header {
 
 h2 {
     margin-top: 13px;
+    font-size: 2.0rem;
 }
 
 h3 {
     margin: 8px;
-}
-
-p {
-    text-align: center;
+    font-size: 1.5rem;
 }
 
 .bouton-git-site {
@@ -92,9 +114,10 @@ p {
     padding: 8px;
     margin: 10px;
     font-size: 1.2rem;
-    background-color: var(--color2);
+    background-color: rgba(125, 194, 165);
     border-radius: 10px;
     border: none;
+    color: var(--text-color);
 }
 
 .btn:hover {
