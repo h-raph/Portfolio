@@ -38,14 +38,12 @@ const body = document.getElementById("body")
 
 const header = document.createElement("header")
 const titre = document.createElement('h1')
-const losan = document.createElement('div')
 
 titre.classList.add('titre')
-losan.classList.add('losange')
 
 titre.textContent = "Mes projets"
 
-header.append(losan, titre)
+header.append(titre)
 body.appendChild(header)
 
 // =================SECTION=================
