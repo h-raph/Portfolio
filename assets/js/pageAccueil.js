@@ -19,10 +19,10 @@ const navLiens2 = document.createElement('ul')
 const liens1 = document.createElement('a')
 const liens2 = document.createElement('a')
 
-liens1.setAttribute('href', './pageWebDev.html')
+liens1.setAttribute('href', './pages/pageWebDev.html')
 liens1.setAttribute('target', '_blank')
 
-liens2.setAttribute('href', './pageDesign.html')
+liens2.setAttribute('href', './pages/pageDesign.html')
 liens2.setAttribute('target', '_blank')
 
 liste.classList.add('menu')
