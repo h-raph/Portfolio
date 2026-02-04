@@ -6,6 +6,7 @@ const projets = [
         site: 'https://star-wars-trilogie.vercel.app/',
         image: '../assets/images/Star-wars.png',
         langage: 'HTML & CSS',
+        description: '',
     },
     {
         nom: 'Collectif Rainbow Photo',
@@ -14,6 +15,7 @@ const projets = [
         site: 'https://collectif-rainbow-photo.vercel.app/',
         image: '../assets/images/Rainbow.png',
         langage: 'HTML & CSS',
+        description: '',
     },
     {
         nom: 'Site mariage',
@@ -22,6 +24,7 @@ const projets = [
         site: 'https://site-mariage-six.vercel.app/',
         image: '../assets/images/Mariage.png',
         langage: 'HTML & CSS',
+        description: '',
     },
     {
         nom: 'Bibliothèque',
@@ -30,6 +33,16 @@ const projets = [
         site: 'https://bibliotheque-peach.vercel.app/',
         image : '../assets/images/Bibliotheque.png',
         langage: 'HTML, CSS & JS',
+        description: '',
+    },
+    {
+        nom: 'Street-Fusion',
+        class: 'street-fusion',
+        github: '',
+        site: '',
+        image: '',
+        langage: 'HTML, CSS & JS',
+        description: '',
     }
 ]
 
@@ -48,9 +61,12 @@ body.appendChild(header)
 
 // =================SECTION=================
 const main = document.createElement("main")
+const article = document.createElement('article')
 
-main.setAttribute("id", "projets")
+main.setAttribute('id', 'main')
+article.setAttribute("id", "projets")
 
+main.append(article)
 body.append(main)
 
 // =================PROJETS=================
@@ -74,7 +90,7 @@ for (let i = 0; i < projets.length; i++) {
     boutonDiv.classList.add('bouton-git-site')
 
     // AJOUT D'ATTRIBUT
-    cardsProjets.setAttribute('style', '--i:' + i+1 + ';')
+    cardsProjets.setAttribute('style', '--i:' + i + ';')
 
     imageProjets.src = projets[i].image
     imageProjets.setAttribute('alt', projets[i].nom)
@@ -93,5 +109,13 @@ for (let i = 0; i < projets.length; i++) {
     span.append(imageProjets, nomProjets, langage, boutonDiv)
     cardsProjets.append(span)
 
-    main.append(cardsProjets)
+    article.append(cardsProjets)
 }
+
+// =================FOOTER=================
+const footer = document.createElement('footer')
+
+footer.classList.add('footer')
+footer.setAttribute('id', 'footer')
+
+body.append(footer)
