@@ -7,33 +7,50 @@ body {
 #main {
     height: 700px;
     position: relative;
+    perspective: 2500px;
 }
 
+/* id de l'article */
 #projets{
     width: 50vh;
     height: 50vh;
     transform-style: preserve-3d;
-    animation: animate 40s linear infinite;
+    animation: animate 20s linear infinite;
 }
 
 @keyframes animate {
     0% {
-        transform: perspective(2500px) rotateY(0deg);
+        transform: rotateY(0deg);
     }
     100%{
-        transform: perspective(2500px) rotateY(360deg);
+        transform: rotateY(360deg);
     }
 }
 
+/* gère la balise section */
 #projets .cards {
     position: absolute;
+    transform-style: preserve-3d;
     top: 0;
     left: 0;
     min-width: 35vw;
     min-height: 65vh;
     transform-origin: center;
-    transform-style: preserve-3d;
     transform: rotateY(calc(var(--i) * 75deg)) translateZ(700px);
+    border-radius: 20px;
+}
+
+/* gère la balise div qui se trouve à l'intérieur de la balise section */
+#projets .cards .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    border-radius: 20px;
+}
+
+/* l'avant des cartes de projets */
+#projets .cards .front {
+    transform: rotateY(0deg);
 
     background:  repeating-linear-gradient(
         190deg,
@@ -59,35 +76,27 @@ body {
         rgb(250, 193, 167) 200px,
         rgb(255, 215, 181) 250px
     );
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow: hidden;
-    border-radius: 20px;
 }
 
-#projets .cards #contain-cards {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    min-height: 100%;
-    object-fit: fill;
-}
-
-#projets .cards.fond {
+/* le dos des cartes de projets */
+#projets .cards .back {
     transform: rotateY(180deg);
-    background: black;
+    background: repeating-linear-gradient(
+    190deg,
+    #222,
+    #222 10px,
+    #333 10px,
+    #333 20px
+    );
 }
 
-#contain-cards img {
+.contain-cards img {
     width: 100%;
     border-radius: 10px;
     transition: 0.5s ease-in-out;
 }
 
-#contain-cards img:hover {
+.contain-cards img:hover {
     transform: scale(1.075);
 }
 
@@ -173,8 +182,11 @@ h3 {
         overflow: visible;
     }
 
-    #projets .cards #contain-cards {
+    #projets .cards .contain-cards {
         position: static;
     }
 }
 
+/* 
+
+*/

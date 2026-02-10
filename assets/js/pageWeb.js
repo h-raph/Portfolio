@@ -72,8 +72,11 @@ body.append(main)
 // =================PROJETS=================
 for (let i = 0; i < projets.length; i++) {
     // CREATION DES DIFFERENTES BALISES
-    const cardsProjets = document.createElement('section')
-    const div = document.createElement('div')
+    const cardsProjets = document.createElement('section') // section
+
+    const divFront = document.createElement('div') // face avant
+    const divBack = document.createElement('div') // face arrière
+
     const boutonDiv = document.createElement('div')
     const imageProjets = document.createElement('img')
     const nomProjets = document.createElement('h2')
@@ -82,7 +85,9 @@ for (let i = 0; i < projets.length; i++) {
     const boutonSite = document.createElement('button')
 
     // AJOUT DE CLASSE
-    cardsProjets.classList.add('cards', "projets-" + projets[i].class, 'face')
+    cardsProjets.classList.add('cards', "projets-" + projets[i].class)
+    divFront.classList.add('face', 'front', 'contain-cards')
+    divBack.classList.add('face', 'back')
 
     boutonGitHub.classList.add('github')
     boutonGitHub.classList.add('btn')
@@ -101,8 +106,6 @@ for (let i = 0; i < projets.length; i++) {
     boutonGitHub.setAttribute('onclick', `window.open('${projets[i].github}')`)
     boutonSite.setAttribute('onclick', `window.open('${projets[i].site}')`)
 
-    div.setAttribute('id', 'contain-cards')
-
     // AJOUT DE TEXTE
     langage.textContent = projets[i].langage
     nomProjets.textContent = projets[i].nom
@@ -111,9 +114,9 @@ for (let i = 0; i < projets.length; i++) {
     boutonGitHub.append('GitHub')
     boutonSite.append('Voir la page')
     boutonDiv.append(boutonSite, boutonGitHub)
-    div.append(imageProjets, nomProjets, langage, boutonDiv)
+    divFront.append(imageProjets, nomProjets, langage, boutonDiv)
 
-    cardsProjets.append(div)
+    cardsProjets.append(divFront, divBack)
 
     article.append(cardsProjets)
 }
