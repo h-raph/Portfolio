@@ -21,6 +21,32 @@
 html {
     background-color: #7DC2A5;
     scrollbar-color: var(--color1) var(--color3);
+
+    background: 
+    repeating-linear-gradient(
+        190deg,
+        rgb(3, 6, 99, 0.5) 40px,
+        rgb(78, 205, 196, 0.5) 80px,
+        rgb(247, 255, 247, 0.5) 120px,
+        rgb(255, 107, 107, 0.5) 160px,
+        rgb(255, 230, 109, 0.5) 200px
+    ),
+    repeating-linear-gradient(
+        -190deg,
+        rgb(3, 6, 99, 0.5) 30px,
+        rgb(78, 205, 196, 0.5) 60px,
+        rgb(247, 255, 247, 0.5) 90px,
+        rgb(255, 107, 107, 0.5) 120px,
+        rgb(255, 230, 109, 0.5) 150px
+    ),
+    repeating-linear-gradient(
+        45deg,
+        rgb(3, 6, 99) 50px,
+        rgb(78, 205, 196) 100px,
+        rgb(247, 255, 247) 150px,
+        rgb(255, 107, 107) 200px,
+        rgb(255, 230, 109) 250px
+    )
 }
 
 body {
@@ -32,32 +58,6 @@ body {
     line-height: 1.6;
     padding: 20px;
     margin: 0;
-
-    /* background: 
-    repeating-linear-gradient(
-        190deg,
-        rgb(3, 6, 99, 0.5) 40px,
-        rgb(7, 12, 115, 0.5) 80px,
-        rgb(11, 23, 153, 0.5) 120px,
-        rgb(9, 9, 173, 0.5) 160px,
-        rgb(21, 11, 214,0.5) 200px
-    ),
-    repeating-linear-gradient(
-        -190deg,
-        rgb(102, 3, 0, 0.5) 30px,
-        rgb(143, 5, 0, 0.5) 60px,
-        rgb(184, 6, 0, 0.5) 90px,
-        rgb(224, 7, 0, 0.5) 120px,
-        rgb(255, 18, 10, 0.5) 150px
-    ),
-    repeating-linear-gradient(
-        45deg,
-        #030663 50px,
-        #4ecdc4 100px,
-        #f7fff7 150px,
-        #ff6b6b 200px,
-        #ffe66d 250px
-    ) */
 }
 
 header {

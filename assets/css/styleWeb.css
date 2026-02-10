@@ -13,7 +13,7 @@ body {
     width: 50vh;
     height: 50vh;
     transform-style: preserve-3d;
-    animation: animate 25s linear infinite;
+    animation: animate 40s linear infinite;
 }
 
 @keyframes animate {
@@ -67,7 +67,7 @@ body {
     border-radius: 20px;
 }
 
-#projets .cards span {
+#projets .cards #contain-cards {
     position: absolute;
     top: 0;
     left: 0;
@@ -76,14 +76,18 @@ body {
     object-fit: fill;
 }
 
+#projets .cards.fond {
+    transform: rotateY(180deg);
+    background: black;
+}
 
-span img {
+#contain-cards img {
     width: 100%;
     border-radius: 10px;
     transition: 0.5s ease-in-out;
 }
 
-span img:hover {
+#contain-cards img:hover {
     transform: scale(1.075);
 }
 
@@ -109,7 +113,7 @@ h3 {
 .btn {
     padding: 8px;
     margin: 10px;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     background-color: rgba(125, 194, 165);
     border-radius: 10px;
     border: none;
@@ -169,7 +173,7 @@ h3 {
         overflow: visible;
     }
 
-    #projets .cards span {
+    #projets .cards #contain-cards {
         position: static;
     }
 }
