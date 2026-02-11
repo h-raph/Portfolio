@@ -6,7 +6,7 @@ const projets = [
         site: 'https://star-wars-trilogie.vercel.app/',
         image: '../assets/images/Star-wars.png',
         langage: 'HTML & CSS',
-        description: '',
+        description: 'Je devais choisir les bons sélecteurs en CSS pour styliser la page',
     },
     {
         nom: 'Collectif Rainbow Photo',
@@ -15,7 +15,7 @@ const projets = [
         site: 'https://collectif-rainbow-photo.vercel.app/',
         image: '../assets/images/Rainbow.png',
         langage: 'HTML & CSS',
-        description: '',
+        description: 'Je devais reproduire le style d\'un modèle que le prof nous avez donnée',
     },
     {
         nom: 'Site mariage',
@@ -76,6 +76,7 @@ for (let i = 0; i < projets.length; i++) {
 
     const divFront = document.createElement('div') // face avant
     const divBack = document.createElement('div') // face arrière
+    const shadow = document.createElement('div') // ombre des cartes
 
     const boutonDiv = document.createElement('div')
     const imageProjets = document.createElement('img')
@@ -86,8 +87,10 @@ for (let i = 0; i < projets.length; i++) {
 
     // AJOUT DE CLASSE
     cardsProjets.classList.add('cards', "projets-" + projets[i].class)
+
     divFront.classList.add('face', 'front', 'contain-cards')
     divBack.classList.add('face', 'back')
+    shadow.classList.add('shadow')
 
     boutonGitHub.classList.add('github')
     boutonGitHub.classList.add('btn')
@@ -116,7 +119,7 @@ for (let i = 0; i < projets.length; i++) {
     boutonDiv.append(boutonSite, boutonGitHub)
     divFront.append(imageProjets, nomProjets, langage, boutonDiv)
 
-    cardsProjets.append(divFront, divBack)
+    cardsProjets.append(divFront, divBack, shadow)
 
     article.append(cardsProjets)
 }
