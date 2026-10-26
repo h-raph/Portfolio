@@ -15,7 +15,7 @@ main {
     text-decoration: none;
     font-size: 2.75rem;
     font-weight: 800;
-    color: var(--text-color );
+    color: black;
 }
 
 .menu ul {

@@ -1,0 +1,17 @@
+@use '../abstracts/variables' as *;
+
+body {
+    background-color: $color-background-primary;
+    -webkit-background-size: 0.3rem 0.3rem;
+    -moz-background-size: 0.3rem 0.3rem;
+    background-size: 0.3rem 0.3rem;
+    background-image: -webkit-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -webkit-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
+    background-image: -moz-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -moz-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
+    background-image: -o-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -o-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
+    background-image: -ms-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -ms-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
+    background-image: linear-gradient(to right, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), linear-gradient(to bottom, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
+    font-family: $font-family;
+    letter-spacing: 0.03rem;
+    font-weight: lighter;
+    color: $color-text;
+}

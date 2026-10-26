@@ -1,0 +1,18 @@
+@use '../abstracts/variables' as *;
+
+.header .is-active {
+    background-color: transparent;
+    color: $color-background-secondary;
+    box-shadow: 0.2em 0.2em 0.1em 0 $color-background-button;
+
+    &::before {
+        top: -0.2rem;
+        bottom: -0.2rem;
+        border-top: 0.1rem solid $color-dark-background;
+        border-bottom: 0.1rem solid $color-dark-background;
+    }
+
+    &::after {
+        width: 100%;
+    }
+}
