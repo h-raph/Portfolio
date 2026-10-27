@@ -1,0 +1,6 @@
+@use '../abstracts/variables' as *;
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat($grid-columns, 1fr);
+}

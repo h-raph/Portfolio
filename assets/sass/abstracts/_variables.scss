@@ -1,3 +1,4 @@
+// DA NieR
 $color-text : #454138;
 $color-background-primary : #d1cdb7;
 $color-background-secondary : #dcd8c0;
@@ -5,3 +6,17 @@ $color-dark-background : #454138;
 $color-background-button : #bab5a1;
 
 $font-family : helvetica, sans-serif;
+
+// DA Expedition 33
+
+
+// # Grid
+// ## Définition du nombre total de colonnes
+$grid-columns: 12;
+
+@for $i from 1 through $grid-columns {
+    .col-#{$i} {
+        // span X signifie "prend X colonnes dans la grille"
+        grid-column: span $i;
+    }
+}

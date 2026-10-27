@@ -1,0 +1,23 @@
+@use '../abstracts/variables' as *;
+
+.card-projet {
+    width: 500px;
+    background-color: $color-background-button;
+    border: 2px solid $color-dark-background;
+    box-sizing: border-box;
+
+    &__img {
+        max-width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+    &__link {
+        text-decoration: none;
+        color: $color-text;
+    }
+
+    &__text {
+        padding: 20px;
+    }
+}

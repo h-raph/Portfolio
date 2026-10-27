@@ -1,6 +1,6 @@
 @use '../abstracts/variables' as *;
 
-body {
+.wb-body {
     background-color: $color-background-primary;
     -webkit-background-size: 0.3rem 0.3rem;
     -moz-background-size: 0.3rem 0.3rem;
@@ -14,4 +14,12 @@ body {
     letter-spacing: 0.03rem;
     font-weight: lighter;
     color: $color-text;
+}
+
+/* .ds-body {
+    ;
+} */
+
+h2 {
+    margin-bottom: 12px;
 }
