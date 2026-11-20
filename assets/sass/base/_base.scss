@@ -1,25 +1,66 @@
 @use '../abstracts/variables' as *;
 
+/* Couleur de fond de la page, visible derrière les cubes et la grille */
 .wb-body {
-    background-color: $color-background-primary;
-    -webkit-background-size: 0.3rem 0.3rem;
-    -moz-background-size: 0.3rem 0.3rem;
-    background-size: 0.3rem 0.3rem;
-    background-image: -webkit-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -webkit-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
-    background-image: -moz-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -moz-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
-    background-image: -o-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -o-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
-    background-image: -ms-linear-gradient(left, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), -ms-linear-gradient(top, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
-    background-image: linear-gradient(to right, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px), linear-gradient(to bottom, $color-background-secondary 1px, rgba(204, 200, 177, 0) 1px);
     font-family: $font-family;
+    background-color: $color-background-primary;
     letter-spacing: 0.03rem;
     font-weight: lighter;
     color: $color-text;
 }
 
-/* .ds-body {
-    ;
-} */
+/* Le contenu passe au-dessus des cubes et de la grille (z-index 0) */
+.wb-body>header,
+.wb-body>main {
+    position: relative;
+    z-index: 2;
+}
 
-h2 {
-    margin-bottom: 12px;
+
+.ds-body {
+    $tex: $f, $g;
+    $tex-o: .4;
+    margin: 0;
+    background: $papier;
+    color: $encre;
+    font: 400 1.02rem/1.8 $f-texte;
+    background-image: radial-gradient(circle at 12% 8%, rgba(125, 131, 127, .16), transparent 38%), radial-gradient(circle at 90% 70%, rgba(95, 133, 128, .12), transparent 40%);
+
+    &::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 10;
+        background-image: $tex;
+        opacity: $tex-o;
+        mix-blend-mode: multiply
+    }
+}
+
+#pinceau {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 14;
+    opacity: 0.24;
+    inset: 0px;
+}
+
+.ac-body {
+    margin: 0;
+    font-family: $body;
+    background: $bg2;
+    color: $ink;
+    overflow-x: hidden;
+
+    &::before {
+        content: "";
+        position: fixed;
+        inset: 0 0 auto;
+        z-index: 46;
+        background: $card;
+        height: env(safe-area-inset-top, 0px);
+    }
 }

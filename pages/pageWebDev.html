@@ -9,50 +9,50 @@
     <link rel="stylesheet" href="../assets/css/mainStyle.css"> <!--Style commun à toute les pages-->
     <link rel="stylesheet" href="../assets/css/styleWeb.css"> <!--Style de la page-->
 
-    <script src="../assets/js/pageWeb.js" defer></script>
+
+    <script src="../assets/js/pageWeb.js"></script>
+    <script src="../assets/js/projetWeb.js" defer></script>
+
 </head>
 
 <body class="wb-body">
     <header class="wb-header header">
-        <nav class="wb-header__nav">
-            <a href="../index.html" class="wb-header__link">Accueil</a>
-            <a href="./pageDesign.html" class="wb-header__link">Design</a>
-            <a href="./pageWebDev.html" class="wb-header__link is-active">Web/Data</a>
+        <nav class="header__nav">
+            <a href="../index.html" class="wb-header__link header__link">Accueil</a>
+            <a href="./pageDesign.html" class="wb-header__link header__link">Design</a>
+            <a href="./pageWebDev.html" class="wb-header__link header__link is-active">Web/Data</a>
         </nav>
     </header>
 
     <main>
-        <section class="b1 wb-section">
-            <h2 class="glitch-text">Les projets en 1<sup>ère</sup> année</h2>
-
-        </section>
-
-        <section class="b2 wb-section">
-            <h2 class="glitch-text">Les projets en 2<sup>ème</sup> année</h2>
-
+        <section class="wb-section">
             <div class="grid">
-                <div class="card-projet col-6">
-                    <img src="https://api.microlink.io/?url=https://gitflow-sigma.vercel.app/&screenshot=true&meta=false&embed=screenshot.url"
-                        alt="Aperçu du site" class="card-projet__img">
-                    <div>
-                        <h3 class="card-projet__title"><a href="https://gitflow-sigma.vercel.app/"
-                                class="card-projet__link" target="_blank">Resonance</a></h3>
-                        <p class="card-projet__text">frhguyhuq</p>
+                <div class="wrap col-12">
+                    <div class="top"><i></i><span class="gt" data-t="Project Log">Project Log B2</span><span
+                            id="clock">00:00:00</span>
                     </div>
-                </div>
-
-                <div class="card-projet col-6">
-                    <img src="https://api.microlink.io/?url=https://mediatheque-tau.vercel.app/&screenshot=true&meta=false&embed=screenshot.url"
-                        alt="Aperçu du site" class="card-projet__img">
-                    <div>
-                        <h3 class="card-projet__title"><a href="https://mediatheque-tau.vercel.app/"
-                                class="card-projet__link" target="_blank">Médiathèque</a></h3>
-                        <p class="card-projet__text">nehfbrhfr</p>
+                    <div class="body">
+                        <nav id="menu">
+                        </nav>
+                        <div class="main">
+                            <div class="term" id="term"></div>
+                            <div class="bar" id="links"></div>
+                            <div class="bar">
+                                <button id="replay">Rejouer</button>
+                                <button id="skip" class="gt">Passer</button>
+                                <small id="speed" class="gt">Vitesse ×1</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
     </main>
+
+    <!-- En fin de body : mount() a besoin que document.body existe -->
+    <script>
+        const bg = NierBackground.mount();
+    </script>
 </body>
 
 </html>

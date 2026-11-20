@@ -1,0 +1,334 @@
+@use '../abstracts/variables' as *;
+
+.top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: $color-dark-background;
+    color: $color-background-secondary;
+    padding: 10px 16px;
+    letter-spacing: .3em;
+    font-size: .8rem;
+    text-transform: uppercase
+}
+
+.top i {
+    width: 10px;
+    height: 10px;
+    background: $color-background-secondary;
+    flex: none
+}
+
+.top span:last-child {
+    margin-left: auto;
+    opacity: .6
+}
+
+.body {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 0;
+    background: $color-background-secondary;
+    border: 1px solid $color-dark-background;
+    border-top: 0
+}
+
+@media(max-width:680px) {
+    .body {
+        grid-template-columns: 1fr
+    }
+}
+
+nav {
+    border-right: 1px solid $color-dark-background;
+    padding: 14px 0
+}
+
+nav h2:not(:first-child) {
+    margin-top: 18px;
+}
+
+@media(max-width:680px) {
+    nav {
+        border-right: 0;
+        border-bottom: 1px solid $color-dark-background
+    }
+}
+
+nav h2 {
+    margin: 0 16px 10px;
+    font-size: .7rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    opacity: .7;
+    font-weight: 400
+}
+
+nav button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: transparent;
+    color: $color-text;
+    font: inherit;
+    font-size: .95rem;
+    padding: 10px 16px;
+    cursor: pointer;
+    letter-spacing: .06em;
+    position: relative;
+    transition: padding .2s
+}
+
+nav button::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border: 1px solid $color-text;
+    flex: none
+}
+
+nav button:hover {
+    background: $color-background-button
+}
+
+nav button.on {
+    background: $color-dark-background;
+    color: $color-background-secondary;
+    padding-left: 22px
+}
+
+nav button.on::before {
+    background: $color-background-secondary;
+    border-color: $color-background-secondary
+}
+
+.main {
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0
+}
+
+.term {
+    background: $color-dark-background;
+    color: $color-background-primary;
+    font: 14px/1.7 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+    padding: 18px;
+    min-height: 300px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    position: relative;
+    overflow: hidden
+}
+
+.term::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(0deg, rgba(209, 205, 183, .05) 0 1px, transparent 1px 3px);
+    pointer-events: none
+}
+
+.term .dim {
+    opacity: .55
+}
+
+.term .hl {
+    background: $color-background-primary;
+    color: $color-dark-background;
+    padding: 0 5px
+}
+
+.cur {
+    display: inline-block;
+    width: .6em;
+    height: 1.05em;
+    background: $color-background-primary;
+    vertical-align: text-bottom;
+    animation: bl 1s steps(1) infinite
+}
+
+@keyframes bl {
+    50% {
+        opacity: 0
+    }
+}
+
+.bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap
+}
+
+.bar button {
+    font: inherit;
+    font-size: .8rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    background: $color-background-button;
+    color: $color-text;
+    border: 1px solid $color-dark-background;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: background .2s, color .2s
+}
+
+.bar button:hover {
+    background: $color-dark-background;
+    color: $color-background-secondary
+}
+
+.bar small {
+    margin-left: auto;
+    font-size: .72rem;
+    letter-spacing: .2em;
+    opacity: .65;
+    text-transform: uppercase
+}
+
+.corner {
+    position: fixed;
+    width: 18px;
+    height: 18px;
+    border: 2px solid $color-dark-background;
+    opacity: .5
+}
+
+.c1 {
+    top: 12px;
+    left: 12px;
+    border-right: 0;
+    border-bottom: 0
+}
+
+.c2 {
+    bottom: 12px;
+    right: 12px;
+    border-left: 0;
+    border-top: 0
+}
+
+#grid {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none
+}
+
+.wrap {
+    position: relative;
+    z-index: 1
+}
+
+.bar a {
+    font: inherit;
+    font-size: .8rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    background: $color-background-button;
+    color: $color-text;
+    border: 1px solid $color-dark-background;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background .2s, color .2s
+}
+
+.bar a:hover {
+    background: $color-dark-background;
+    color: $color-background-secondary
+}
+
+#links {
+    min-height: 0
+}
+
+#pv {
+    border: 1px solid $color-dark-background;
+    background: $color-background-secondary
+}
+
+#pv[hidden] {
+    display: none
+}
+
+#pv .pvb {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    background: $color-dark-background;
+    color: $color-background-secondary;
+    padding: 6px 12px;
+    font-size: .72rem;
+    letter-spacing: .12em;
+    overflow: hidden
+}
+
+#pv .pvb span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    opacity: .7
+}
+
+#pv .pvb a {
+    color: $color-background-secondary;
+    white-space: nowrap
+}
+
+#pv iframe {
+    display: block;
+    width: 100%;
+    height: 380px;
+    border: 0;
+    background: #fff
+}
+
+.term.shake {
+    animation: ts .45s steps(1)
+}
+
+@keyframes ts {
+    0% {
+        transform: translate(-5px, 0);
+        clip-path: inset(0 0 70% 0)
+    }
+
+    20% {
+        transform: translate(6px, 2px);
+        clip-path: inset(40% 0 20% 0)
+    }
+
+    40% {
+        transform: translate(-3px, -2px);
+        clip-path: inset(10% 0 50% 0)
+    }
+
+    60% {
+        transform: translate(4px, 0);
+        clip-path: inset(60% 0 0 0)
+    }
+
+    80% {
+        transform: translate(-2px, 1px);
+        clip-path: inset(0)
+    }
+
+    100% {
+        transform: none;
+        clip-path: inset(0)
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+    * {
+        animation-duration: .01s !important;
+        transition-duration: .01s !important
+    }
+}

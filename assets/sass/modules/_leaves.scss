@@ -1,0 +1,37 @@
+/* feuilles qui tombent */
+.leaves {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 40;
+    overflow: hidden
+}
+
+.leaves svg {
+    position: absolute;
+    top: 0;
+    width: 24px;
+    height: 24px;
+    opacity: .9;
+    animation: fall linear infinite, sway ease-in-out infinite alternate
+}
+
+@keyframes fall {
+    from {
+        translate: 0 -12vh
+    }
+
+    to {
+        translate: 60px 112vh
+    }
+}
+
+@keyframes sway {
+    from {
+        rotate: -40deg
+    }
+
+    to {
+        rotate: 40deg
+    }
+}

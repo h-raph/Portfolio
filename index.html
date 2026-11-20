@@ -5,19 +5,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Accueil</title>
-
     <link rel="stylesheet" href="./assets/css/mainStyle.css"> <!--Style commun à toute les pages-->
-    <link rel="stylesheet" href="./assets/css/styleAccueil.css"> <!--Style de la page-->
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap"
+        rel="stylesheet">
 
     <script src="./assets/js/pageAccueil.js" defer></script>
 </head>
 
-<body>
-    <header class="ly-header header">
+<body class="ac-body">
+    <div class="leaves" aria-hidden="true">
+        <svg style="left:6%;color:#d9742b;animation-duration:17s,4s;animation-delay:-3s,-1s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:16%;width:18px;height:18px;color:#b5402a;animation-duration:21s,5s;animation-delay:-12s,-2s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:27%;width:28px;height:28px;color:#e6a23c;animation-duration:19s,4.5s;animation-delay:-7s,-3s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:38%;width:20px;height:20px;color:#c9503c;animation-duration:15s,3.5s;animation-delay:-1s,0s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:49%;color:#9a5a2b;animation-duration:23s,5s;animation-delay:-16s,-2s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:59%;width:26px;height:26px;color:#d9742b;animation-duration:18s,4s;animation-delay:-9s,-1s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:70%;width:18px;height:18px;color:#e6a23c;animation-duration:16s,3s;animation-delay:-5s,-2s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:80%;color:#b5402a;animation-duration:22s,5s;animation-delay:-14s,-3s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:90%;width:20px;height:20px;color:#d9742b;animation-duration:20s,4s;animation-delay:-8s,0s">
+            <use href="#leaf" />
+        </svg>
+        <svg style="left:96%;width:28px;height:28px;color:#c9503c;animation-duration:24s,5.5s;animation-delay:-19s,-1s">
+            <use href="#leaf" />
+        </svg>
+    </div>
+
+    <header class="ac-header header">
         <nav class="header__nav">
-            <a href="index.html" class="header__link is-active">Accueil</a>
-            <a href="./pages/pageDesign.html" class="header__link">Design</a>
-            <a href="./pages/pageWebDev.html" class="header__link">Web/Data</a>
+            <a href="index.html" class="ac-header__link header__link is-active">Accueil</a>
+            <a href="./pages/pageDesign.html" class="ac-header__link header__link">Design</a>
+            <a href="./pages/pageWebDev.html" class="ac-header__link header__link">Web/Data</a>
         </nav>
     </header>
 </body>

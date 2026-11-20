@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<!--
+  PIRATAGE, mini-jeu en vue de dessus (three.js)
+  Inspiré du mini-jeu de piratage de NieR:Automata.
+
+  Un seul fichier : HTML (interface) + CSS (style) + JavaScript (jeu).
+  Principe du jeu : un vaisseau se déplace dans une arène rectangulaire,
+  tire vers la souris et doit détruire des ennemis sans perdre ses 3 points de vie.
+
+  Plan du fichier
+    1. CSS   : couleurs, interface (score, vie, menus)
+    2. HTML  : canvas 3D, interface, écran d'accueil, menu pause
+    3. JS    : scène 3D, entrées clavier/souris, ennemis, tirs, collisions, boucle de jeu
+-->
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Piratage, mini-jeu isométrique</title>
+  <style>
+    /* Palette : les variables servent à l'interface HTML.
+   Les couleurs de la scène 3D sont définies séparément dans le JavaScript. */
+    :root {
+      --bg: #d1cdb7;
+      --grid: #bab5a1;
+      --bone: #454138;
+      --rust: #8a4a30;
+      --ice: #dcd8c0;
+      color-scheme: light
+    }
+
+    /* La page est plein écran, sans barres de défilement */
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      background: var(--bg);
+      color: var(--bone);
+      font-family: "Courier New", Courier, monospace;
+      overflow: hidden
+    }
+
+    /* Le canvas où three.js dessine le jeu */
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+      touch-action: none
+    }
+
+    /* Barre du haut : score à gauche, bouton pause au centre, vie à droite.
+   pointer-events:none laisse passer les clics vers le jeu, sauf sur le bouton (voir #pbtn). */
+    #hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      padding-top: calc(14px + env(safe-area-inset-top, 0px));
+      pointer-events: none;
+      font-size: 15px;
+      letter-spacing: .06em
+    }
+
+    /* Points de vie : un petit trait plein par vie restante, un trait vide par vie perdue */
+    #hp {
+      display: flex;
+      gap: 6px
+    }
+
+    #hp i {
+      width: 26px;
+      height: 8px;
+      background: var(--bone)
+    }
+
+    #hp i.off {
+      background: transparent;
+      outline: 1px solid var(--grid)
+    }
+
+    /* Écran d'accueil / game over : couvre tout l'écran. La classe .hide le cache. */
+    #msg {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      text-align: center;
+      background: rgba(209, 205, 183, .9);
+      cursor: pointer;
+      padding: 24px
+    }
+
+    #msg h1 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 400;
+      margin: 0;
+      letter-spacing: .14em
+    }
+
+    #msg p {
+      margin: 0;
+      color: #6b665a;
+      max-width: 46ch;
+      line-height: 1.55
+    }
+
+    #msg b {
+      color: var(--bone);
+      font-weight: 400;
+      border-bottom: 1px solid var(--rust)
+    }
+
+    #msg.hide {
+      display: none
+    }
+
+    /* Boutons (pause, reprendre, recommencer) */
+    .btn {
+      font: inherit;
+      font-size: 15px;
+      letter-spacing: .06em;
+      color: var(--bone);
+      background: var(--grid);
+      border: 1px solid var(--bone);
+      padding: 10px 26px;
+      min-width: 220px;
+      cursor: pointer
+    }
+
+    .btn:hover {
+      background: var(--bone);
+      color: var(--bg)
+    }
+
+    #pbtn {
+      pointer-events: auto;
+      min-width: 0;
+      padding: 4px 14px
+    }
+
+    .btn a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* le bouton reste cliquable dans le HUD */
+
+    /* Menu pause : caché par défaut, affiché quand on ajoute la classe .show */
+    #pause {
+      position: fixed;
+      inset: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: rgba(209, 205, 183, .9);
+      padding: 24px;
+      text-align: center
+    }
+
+    #pause.show {
+      display: flex
+    }
+
+    #pause h1 {
+      font-size: clamp(22px, 4vw, 34px);
+      font-weight: 400;
+      margin: 0 0 8px;
+      letter-spacing: .14em
+    }
+
+    #pause p {
+      margin: 8px 0 0;
+      color: #6b665a
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="c"></canvas>
+
+  <!-- Interface par-dessus le jeu : score, bouton pause, points de vie (remplis par le JS) -->
+  <div id="hud"><span id="score">0</span><button class="btn" id="pbtn" tabindex="-1">Pause</button><span id="hp"></span>
+  </div>
+
+  <!-- Écran d'accueil, réutilisé pour l'écran de game over (le JS change les textes) -->
+  <div id="msg">
+    <h1 id="title">Piratage</h1>
+    <p id="sub">ZQSD ou flèches pour se déplacer, souris pour viser, clic maintenu ou espace pour tirer. Détruis les
+      noyaux ennemis sans te faire toucher. Échap ou P pour mettre en pause.</p>
+    <p><b id="cta">Clique pour commencer</b></p>
+  </div>
+
+  <!-- Menu pause -->
+  <div id="pause">
+    <h1>Pause</h1>
+    <button class="btn" id="resume">Reprendre</button>
+    <button class="btn" id="restart">Recommencer</button>
+    <button  class="btn"><a href="./pageWebDev.html">Revenir au Portfolio</a></button>
+    <p>Échap ou P pour reprendre</p>
+  </div>
+
+  <!-- Bibliothèque 3D three.js (version fixée) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+    // Tout le code est dans une fonction qui s'exécute tout de suite,
+    // pour que les variables ne polluent pas la page.
+    (function () {
+
+      /* ==========================================================
+         1. RÉGLAGES ET OUTILS
+         ========================================================== */
+
+      // Demi-dimensions de l'arène : elle va de -W à +W en x et de -H à +H en z.
+      // Dans three.js, le sol est le plan X/Z (Y est la hauteur).
+      const W = 11, H = 7;
+
+      // Nombre aléatoire entre a et b
+      const R = (a, b) => a + Math.random() * (b - a);
+
+      /* ==========================================================
+         2. SCÈNE, CAMÉRA ET RENDU
+         ========================================================== */
+
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color(0xd1cdb7);   // fond beige
+
+      const cv = document.getElementById('c');
+      const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: cv });
+      renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); // netteté sur écrans HD, limitée à 2 pour la performance
+
+      // Caméra en perspective, placée en hauteur et en avant de l'arène, qui regarde le centre.
+      // Plus le 2e chiffre (hauteur) est grand par rapport au 3e (recul), plus la vue est "du dessus".
+      const cam = new THREE.PerspectiveCamera(40, 1, 0.1, 200);
+      cam.position.set(0, 17, 15);
+      cam.lookAt(0, 0, 0);
+
+      // Appelée au démarrage et à chaque redimensionnement de la fenêtre.
+      // Elle ajuste le champ de vision pour que l'arène tienne toujours en largeur
+      // (22.7 est la distance de la caméra au centre : racine de 17² + 15²).
+      function resize() {
+        const w = innerWidth, h = innerHeight, a = w / h;
+        renderer.setSize(w, h, false);
+        cam.aspect = a;
+        cam.fov = 2 * Math.atan(Math.max(0.364, 14 / (22.7 * a))) * 180 / Math.PI;
+        cam.updateProjectionMatrix();
+      }
+      addEventListener('resize', resize);
+      resize();
+
+      // Lumières : une lumière ambiante (éclaire tout) + une lumière directionnelle (donne du relief)
+      scene.add(new THREE.AmbientLight(0xffffff, 0.55));
+      const sun = new THREE.DirectionalLight(0xffffff, 0.8);
+      sun.position.set(5, 12, 3);
+      scene.add(sun);
+
+      /* ==========================================================
+         3. DÉCOR : GRILLE, CONTOUR ET SOL DE L'ARÈNE
+         ========================================================== */
+
+      // Grille : on liste les extrémités de chaque ligne (x1,y1,z1, x2,y2,z2) puis on les dessine
+      const pts = [];
+      for (let x = -W; x <= W; x++)pts.push(x, 0, -H, x, 0, H);   // lignes dans le sens de la profondeur
+      for (let z = -H; z <= H; z++)pts.push(-W, 0, z, W, 0, z);   // lignes dans le sens de la largeur
+      const gg = new THREE.BufferGeometry();
+      gg.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3));
+      scene.add(new THREE.LineSegments(gg, new THREE.LineBasicMaterial({ color: 0xbab5a1 })));
+
+      // Contour : les arêtes d'une boîte plate, ce qui donne des parois en volume
+      const frame = new THREE.LineSegments(
+        new THREE.EdgesGeometry(new THREE.BoxGeometry(W * 2, 0.8, H * 2)),
+        new THREE.LineBasicMaterial({ color: 0x454138 })
+      );
+      frame.position.y = 0.4;
+      scene.add(frame);
+
+      // Sol clair, légèrement sous la grille pour éviter que les deux se chevauchent
+      const floor = new THREE.Mesh(new THREE.PlaneGeometry(W * 2, H * 2), new THREE.MeshBasicMaterial({ color: 0xdcd8c0 }));
+      floor.rotation.x = -Math.PI / 2;
+      floor.position.y = -0.02;
+      scene.add(floor);
+
+      /* ==========================================================
+         4. MATÉRIAUX ET FORMES
+         Un matériau = la couleur d'un objet. Une géométrie = sa forme.
+         On les crée une seule fois et on les réutilise pour tous les objets.
+         ========================================================== */
+
+      const mBone = new THREE.MeshLambertMaterial({ color: 0x454138 });   // joueur (sombre)
+      const mRust = new THREE.MeshLambertMaterial({ color: 0x8a4a30 });   // cubes ennemis et leurs tirs
+      const mAmber = new THREE.MeshLambertMaterial({ color: 0xa8803a });  // ennemis tireurs
+      const mIce = new THREE.MeshBasicMaterial({ color: 0x454138 });      // tirs du joueur
+
+      const gSph = new THREE.SphereGeometry(1, 8, 6);                    // balles (la taille est réglée avec scale)
+      const gBox = new THREE.BoxGeometry(1, 1, 1);                       // cubes ennemis et éclats d'explosion
+      const gShip = new THREE.ConeGeometry(0.45, 1.4, 3);                // vaisseau : un cône à 3 faces
+      gShip.rotateX(Math.PI / 2);                                      // couché pour que la pointe regarde vers +z
+      const gOct = new THREE.OctahedronGeometry(0.7);                  // ennemis tireurs
+
+      /* ==========================================================
+         5. ÉTAT DU JEU
+         ========================================================== */
+
+      // Le vaisseau : sa position est aussi celle du joueur (player.pos pointe vers la même position)
+      const ship = new THREE.Mesh(gShip, mBone);
+      ship.position.y = 0.5;
+      scene.add(ship);
+      const player = { hp: 3, inv: 0, pos: ship.position };   // hp = vie, inv = temps d'invincibilité restant
+
+      let bullets = [];       // tirs (joueur et ennemis)
+      let enemies = [];       // ennemis vivants
+      let parts = [];         // particules d'explosion
+      let score = 0;
+      let running = false;    // true pendant une partie
+      let spawnT = 0;         // minuteur avant la prochaine apparition d'ennemi
+      let fireT = 0;          // minuteur entre deux tirs du joueur
+
+      /* ==========================================================
+         6. ENTRÉES : CLAVIER ET SOURIS
+         ========================================================== */
+
+      const keys = {};                 // touches actuellement enfoncées (par code physique)
+      let down = false;                // le bouton de la souris est-il maintenu ?
+      const ndc = new THREE.Vector2(); // position de la souris, de -1 à 1 sur chaque axe
+
+      // e.code désigne la position physique de la touche : "KeyW" est la touche Z sur un clavier AZERTY.
+      addEventListener('keydown', e => {
+        if (e.code === 'Escape' || e.code === 'KeyP') {      // pause
+          if (!e.repeat) setPause(!paused);
+          return;
+        }
+        keys[e.code] = true;
+        if (e.code === 'Space') e.preventDefault();      // empêche la page de défiler avec la barre espace
+      });
+      addEventListener('keyup', e => { keys[e.code] = false; });
+      cv.addEventListener('pointerdown', () => { down = true; });
+      addEventListener('pointerup', () => { down = false; });
+      addEventListener('pointermove', e => {
+        ndc.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1);
+      });
+
+      // Visée : on lance un rayon depuis la caméra à travers la souris et on regarde
+      // où il touche un plan horizontal à la hauteur des objets (y = 0.5).
+      const ray = new THREE.Raycaster();
+      const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), -0.5);
+      const hit = new THREE.Vector3();
+      const aim = new THREE.Vector3(0, 0, -1);   // direction de visée actuelle (vecteur de longueur 1)
+
+      /* ==========================================================
+         7. INTERFACE : SCORE ET VIE
+         ========================================================== */
+
+      const elScore = document.getElementById('score');
+      const elHp = document.getElementById('hp');
+      const msg = document.getElementById('msg');
+
+      // Met à jour le score et les 3 traits de vie
+      function drawHud() {
+        elScore.textContent = 'Score ' + score;
+        elHp.innerHTML = '';
+        for (let i = 0; i < 3; i++) {
+          const s = document.createElement('i');
+          if (i >= player.hp) s.className = 'off';
+          elHp.appendChild(s);
+        }
+      }
+
+      /* ==========================================================
+         8. CRÉATION D'OBJETS : TIRS, EXPLOSIONS, ENNEMIS
+         ========================================================== */
+
+      // Crée un tir. pos = départ, dir = direction (longueur 1), speed = vitesse,
+      // mat = couleur, r = rayon, life = durée de vie en secondes,
+      // mine = true si c'est un tir du joueur (il touche les ennemis), false si c'est un tir ennemi.
+      function shoot(pos, dir, speed, mat, r, life, mine) {
+        const m = new THREE.Mesh(gSph, mat);
+        m.scale.setScalar(r);
+        m.position.copy(pos);
+        scene.add(m);
+        bullets.push({ m, v: dir.clone().multiplyScalar(speed), life, mine, r });
+      }
+
+      // Explosion : 9 petits cubes projetés dans des directions aléatoires
+      function burst(pos, mat) {
+        for (let i = 0; i < 9; i++) {
+          const m = new THREE.Mesh(gBox, mat);
+          m.scale.setScalar(0.18);
+          m.position.copy(pos);
+          scene.add(m);
+          const a = R(0, 6.28);
+          parts.push({
+            m,
+            v: new THREE.Vector3(Math.cos(a), R(1, 4), Math.sin(a)).multiplyScalar(R(1.5, 4)),
+            life: 0.55
+          });
+        }
+      }
+
+      // Fait apparaître un ennemi sur un bord de l'arène.
+      // 30 % de tireurs (octaèdres, 2 points de vie), 70 % de cubes qui foncent (1 point de vie).
+      function spawn() {
+        const shooter = Math.random() < 0.3;
+        const m = new THREE.Mesh(shooter ? gOct : gBox, shooter ? mAmber : mRust);
+        if (!shooter) m.scale.setScalar(0.9);
+        let x, z;
+        if (Math.random() < 0.5) {                       // bord gauche ou droit
+          x = (Math.random() < 0.5 ? -1 : 1) * W; z = R(-H, H);
+        } else {                                       // bord du haut ou du bas
+          z = (Math.random() < 0.5 ? -1 : 1) * H; x = R(-W, W);
+        }
+        m.position.set(x, 0.5, z);
+        scene.add(m);
+        // t = minuteur de tir, side = sens dans lequel un tireur tourne autour du joueur
+        enemies.push({ m, shooter, hp: shooter ? 2 : 1, t: R(0, 1.5), side: Math.random() < 0.5 ? -1 : 1 });
+      }
+
+      // Remet tout à zéro pour une nouvelle partie
+      function reset() {
+        for (const b of bullets) scene.remove(b.m);
+        for (const e of enemies) scene.remove(e.m);
+        for (const p of parts) scene.remove(p.m);
+        bullets = []; enemies = []; parts = [];
+        score = 0; spawnT = 0.5;
+        player.hp = 3; player.inv = 0;
+        player.pos.set(0, 0.5, 0);
+        ship.visible = true;
+        drawHud();
+      }
+
+      /* ==========================================================
+         9. DÉMARRAGE ET PAUSE
+         ========================================================== */
+
+      let paused = false;
+      const elPause = document.getElementById('pause');
+      const pbtn = document.getElementById('pbtn');
+
+      // Active ou désactive la pause. On ne peut pas mettre en pause hors partie.
+      // À la mise en pause, on relâche toutes les touches pour éviter qu'elles restent "coincées".
+      function setPause(v) {
+        if (v && !running) return;
+        paused = v;
+        elPause.classList.toggle('show', v);
+        if (v) {
+          down = false;
+          for (const k in keys) keys[k] = false;
+        }
+      }
+
+      // Clic sur l'écran d'accueil ou de game over : on lance une nouvelle partie
+      msg.addEventListener('click', () => {
+        reset(); running = true; paused = false;
+        msg.classList.add('hide');
+      });
+      pbtn.addEventListener('click', () => { setPause(true); pbtn.blur(); });
+      document.getElementById('resume').addEventListener('click', () => { setPause(false); });
+      document.getElementById('restart').addEventListener('click', () => { reset(); setPause(false); });
+
+      // Pause automatique si on quitte la fenêtre ou l'onglet
+      addEventListener('blur', () => setPause(true));
+      document.addEventListener('visibilitychange', () => { if (document.hidden) setPause(true); });
+
+      /* ==========================================================
+         10. MISE À JOUR DU JEU (appelée à chaque image)
+         dt = temps écoulé depuis l'image précédente, en secondes.
+         Multiplier les vitesses par dt rend le jeu identique quelle que soit la puissance de l'ordinateur.
+         ========================================================== */
+
+      const clock = new THREE.Clock();
+      const tmp = new THREE.Vector3();   // vecteur de travail réutilisé pour éviter de recréer des objets
+
+      function update(dt) {
+
+        // ---- Déplacement du joueur ----
+        // ix : -1 gauche, +1 droite. iy : +1 haut de l'écran, -1 bas.
+        let ix = 0, iy = 0;
+        if (keys.KeyD || keys.ArrowRight) ix += 1;
+        if (keys.KeyA || keys.ArrowLeft) ix -= 1;
+        if (keys.KeyW || keys.ArrowUp) iy += 1;
+        if (keys.KeyS || keys.ArrowDown) iy -= 1;
+        tmp.set(ix, 0, -iy);   // "haut de l'écran" correspond à -z dans le monde 3D
+        // normalize() évite d'aller plus vite en diagonale. 8 = vitesse du vaisseau.
+        if (tmp.lengthSq() > 0) tmp.normalize().multiplyScalar(8 * dt);
+        player.pos.add(tmp);
+        // On empêche le vaisseau de sortir de l'arène
+        player.pos.x = Math.max(-W + 0.7, Math.min(W - 0.7, player.pos.x));
+        player.pos.z = Math.max(-H + 0.7, Math.min(H - 0.7, player.pos.z));
+
+        // ---- Visée à la souris ----
+        ray.setFromCamera(ndc, cam);
+        if (ray.ray.intersectPlane(plane, hit)) {
+          tmp.copy(hit).sub(player.pos);
+          tmp.y = 0;
+          if (tmp.lengthSq() > 0.05) aim.copy(tmp).normalize();   // seuil pour éviter de trembler quand la souris est sur le vaisseau
+        }
+        ship.rotation.y = Math.atan2(aim.x, aim.z);   // tourne la pointe du vaisseau vers la visée
+
+        // ---- Tir du joueur : un tir toutes les 0.14 s tant qu'on maintient clic ou espace ----
+        fireT -= dt;
+        if ((down || keys.Space) && fireT <= 0) {
+          fireT = 0.14;
+          tmp.copy(player.pos).addScaledVector(aim, 0.9);   // le tir part un peu devant le vaisseau
+          shoot(tmp, aim, 22, mIce, 0.14, 1.2, true);            // vitesse 22, rayon 0.14, durée de vie 1.2 s
+        }
+
+        // ---- Apparition des ennemis : de plus en plus rapide avec le score, minimum 0.45 s ----
+        spawnT -= dt;
+        if (spawnT <= 0) {
+          spawn();
+          spawnT = Math.max(0.45, 1.5 - score * 0.004);
+        }
+
+        // ---- Ennemis ----
+        const sp = 2.4 + Math.min(score * 0.01, 2);   // vitesse des cubes : augmente avec le score, plafonnée
+        for (let i = enemies.length - 1; i >= 0; i--) {  // on parcourt à l'envers pour pouvoir en supprimer
+          const e = enemies[i];
+          e.t += dt;
+          tmp.copy(player.pos).sub(e.m.position);
+          tmp.y = 0;
+          const d = tmp.length();                // distance au joueur
+          tmp.normalize();                     // tmp = direction vers le joueur
+
+          if (!e.shooter) {
+            // Cube : fonce sur le joueur en tournant sur lui-même
+            e.m.position.addScaledVector(tmp, sp * dt);
+            e.m.rotation.y += dt * 2;
+            e.m.rotation.x += dt;
+          } else {
+            // Tireur : s'approche jusqu'à 7 unités, puis tourne autour du joueur
+            if (d > 7) e.m.position.addScaledVector(tmp, 2 * dt);
+            else e.m.position.add(new THREE.Vector3(-tmp.z, 0, tmp.x).multiplyScalar(1.5 * dt * e.side));
+            // Reste dans l'arène
+            e.m.position.x = Math.max(-W + 0.6, Math.min(W - 0.6, e.m.position.x));
+            e.m.position.z = Math.max(-H + 0.6, Math.min(H - 0.6, e.m.position.z));
+            e.m.rotation.y += dt * 1.5;
+            // Tire vers le joueur toutes les 1.8 s
+            if (e.t > 1.8) {
+              e.t = 0;
+              shoot(e.m.position, tmp, 6, mRust, 0.2, 4, false);
+            }
+          }
+
+          // Contact d'un cube avec le joueur : dégât, et le cube explose
+          if (player.inv <= 0 && d < 0.9 && !e.shooter) {
+            hurt();
+            kill(i, false);
+          }
+        }
+
+        // ---- Tirs ----
+        for (let i = bullets.length - 1; i >= 0; i--) {
+          const b = bullets[i];
+          b.m.position.addScaledVector(b.v, dt);
+          b.life -= dt;
+          const p = b.m.position;
+          // Le tir disparaît s'il est trop vieux ou hors de l'arène
+          let gone = b.life <= 0 || Math.abs(p.x) > W + 1 || Math.abs(p.z) > H + 1;
+
+          if (!gone && b.mine) {
+            // Tir du joueur : touche le premier ennemi à moins de 0.75 unité
+            for (let j = enemies.length - 1; j >= 0; j--) {
+              const e = enemies[j];
+              if (Math.hypot(e.m.position.x - p.x, e.m.position.z - p.z) < 0.75) {
+                gone = true;
+                e.hp--;
+                if (e.hp <= 0) kill(j, true);
+                break;
+              }
+            }
+          } else if (!gone && player.inv <= 0 && Math.hypot(player.pos.x - p.x, player.pos.z - p.z) < 0.55) {
+            // Tir ennemi : touche le joueur à moins de 0.55 unité
+            gone = true;
+            hurt();
+          }
+
+          if (gone) {
+            scene.remove(b.m);
+            bullets.splice(i, 1);
+          }
+        }
+
+        // ---- Particules : elles retombent (gravité) et rétrécissent jusqu'à disparaître ----
+        for (let i = parts.length - 1; i >= 0; i--) {
+          const p = parts[i];
+          p.life -= dt;
+          p.v.y -= 9 * dt;
+          p.m.position.addScaledVector(p.v, dt);
+          p.m.scale.setScalar(Math.max(0.01, p.life * 0.3));
+          if (p.life <= 0) {
+            scene.remove(p.m);
+            parts.splice(i, 1);
+          }
+        }
+
+        // ---- Invincibilité après un coup : le vaisseau clignote pendant 1.2 s ----
+        if (player.inv > 0) {
+          player.inv -= dt;
+          ship.visible = Math.floor(player.inv * 12) % 2 === 0;
+          if (player.inv <= 0) ship.visible = true;
+        }
+      }
+
+      // Détruit l'ennemi numéro i. scored = true si c'est le joueur qui l'a tué (il gagne des points :
+      // 10 pour un cube, 25 pour un tireur).
+      function kill(i, scored) {
+        const e = enemies[i];
+        burst(e.m.position, e.shooter ? mAmber : mRust);
+        scene.remove(e.m);
+        enemies.splice(i, 1);
+        if (scored) {
+          score += e.shooter ? 25 : 10;
+          drawHud();
+        }
+      }
+
+      // Le joueur perd une vie, devient invincible 1.2 s. À 0 vie : game over.
+      function hurt() {
+        player.hp--;
+        player.inv = 1.2;
+        burst(player.pos, mBone);
+        drawHud();
+        if (player.hp <= 0) {
+          running = false;
+          ship.visible = false;
+          document.getElementById('title').textContent = 'Piratage échoué';
+          document.getElementById('sub').textContent = 'Score final : ' + score;
+          document.getElementById('cta').textContent = 'Clique pour recommencer';
+          msg.classList.remove('hide');
+        }
+      }
+
+      /* ==========================================================
+         11. BOUCLE PRINCIPALE
+         ========================================================== */
+
+      drawHud();
+      (function loop() {
+        requestAnimationFrame(loop);                  // redemande une image au navigateur (environ 60 fois par seconde)
+        const dt = Math.min(clock.getDelta(), 0.05);     // temps écoulé, plafonné pour éviter les sauts après une pause
+        if (running) {
+          if (!paused) update(dt);                      // en pause, rien ne bouge
+        } else {
+          for (const e of enemies) { e.m.rotation.y += dt; } // écran de game over : les ennemis tournent doucement
+        }
+        renderer.render(scene, cam);                   // dessine la scène vue par la caméra
+      })();
+
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,8 +1,7 @@
 @use '../abstracts/variables' as *;
 
-.wb-header {
-    background-color: $color-background-secondary;
-    padding: 2rem 0;
+.header {
+    padding: 1.5rem 0;
 
     &__nav {
         display: flex;
@@ -16,9 +15,6 @@
         display: inline-block;
         padding: 0.5rem 1rem;
         font-size: 2rem;
-        font-family: inherit;
-        font-weight: inherit;
-        letter-spacing: inherit;
         color: inherit;
         background-color: transparent;
         text-decoration: none;
@@ -26,6 +22,13 @@
         border: none;
         cursor: pointer;
         z-index: 1;
+    }
+}
+
+.wb-header {
+    background-color: $color-background-secondary;
+
+    &__link {
         transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 
         &:hover:not(:disabled) {
@@ -64,7 +67,7 @@
             left: 0;
             width: 0;
             background-color: $color-dark-background;
-            transition: width 0.2s ease-out;
+            transition: width 0.45s ease-out;
             z-index: -1;
         }
 
@@ -75,5 +78,61 @@
                 background-color: $color-background-secondary;
             }
         }
+    }
+}
+
+.ds-header {
+    position: sticky;
+    z-index: 6;
+    background: $papier;
+    padding-top: 1rem;
+
+    &::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -5px;
+        height: 9px;
+        background: $encre;
+        filter: url(#rough);
+        pointer-events: none;
+        clip-path: polygon(0 50%, 8% 25%, 30% 45%, 55% 20%, 80% 50%, 100% 40%, 97% 75%, 70% 60%, 42% 85%, 15% 70%)
+    }
+
+    &__link {
+        &::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: -1px;
+            height: 8px;
+            width: 0;
+            background: $cinabre;
+            filter: url(#rough);
+            clip-path: polygon(0 60%, 4% 25%, 40% 40%, 75% 20%, 100% 45%, 96% 80%, 60% 65%, 20% 90%);
+            transition: width .35s ease
+        }
+
+        &:hover::after,
+        &[aria-current="true"]::after {
+            width: 100%;
+        }
+
+        &[aria-current="true"] {
+            font-weight: 600;
+        }
+    }
+}
+
+.ac-header {
+    background: $bg;
+    position: sticky;
+    z-index: 45;
+    border-bottom: 1px solid $bd;
+    box-shadow: 0 4px 14px rgba(80, 40, 15, .08);
+
+    &__link {
+        color: $ink;
     }
 }
