@@ -10,12 +10,30 @@ sans-serif;
 
 // =========== DA Encre Chinois ===========
 // Palette
-$papier: #f5f3ec;
-$papier2: #e9e6da;
-$encre: #22262b;
-$lavis: #7d837f;
-$cinabre: #b3302a;
-$celadon: #5f8580;
+$themes: (
+    clair: (
+        papier: #ffffff,
+        papier2: #f4f4f4,
+        encre: #1d2023,
+        lavis: #6e736e,
+        cinabre: #d4574d,
+        celadon: #5c857f,
+    ),
+    sombre: (
+        papier: #1d2023,
+        papier2: #272b2f,
+        encre: #e6e1d2,
+        lavis: #8f948f,
+        cinabre: #d4574d,
+        celadon: #7fa6a0,
+    ),
+);
+$cinabre-fonce: #86221d; // couleur de la peinture au survol
+$texte-clair: #f3eee0; // texte sur fond rouge (identique dans les deux thèmes)
+
+// Formes de la peinture : fermée (rien de visible) puis ouverte (bord de pinceau irrégulier)
+$peint-ferme: polygon(0% 0%, 0% 0%, 0% 12%, 0% 25%, 0% 37%, 0% 50%, 0% 62%, 0% 75%, 0% 87%, 0% 100%, 0% 100%);
+$peint-ouvert: polygon(0% 0%, 100% 0%, 103% 12%, 99% 25%, 104% 37%, 100% 50%, 102% 62%, 98% 75%, 103% 87%, 100% 100%, 0% 100%);
 
 // Polices
 $f-pinceau: "Ma Shan Zheng", "Cormorant Garamond", serif;

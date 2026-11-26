@@ -24,13 +24,28 @@
         </filter>
     </svg>
 
-    <header class="ds-header header">
+    <!-- <header class="ds-header header">
         <nav class="header__nav">
             <a href="../index.html" class="ds-header__link header__link">Accueil</a>
             <a href="./pageDesign.html" class="ds-header__link header__link is-active">Design</a>
             <a href="./pageWebDev.html" class="ds-header__link header__link">Web/Data</a>
         </nav>
-    </header>
+    </header> -->
+
+    <button id="btn-dessin" type="button" aria-pressed="false" aria-label="Dessiner un geste"
+        title="Dessiner un geste"><span aria-hidden="true">筆</span></button>
+    <div id="aide-dessin" role="status" hidden>
+        <ul class="modeles">
+            <li><span class="modele" aria-hidden="true">夜</span><span>Thème sombre</span></li>
+            <li><span class="modele" aria-hidden="true">日</span><span>Thème clair</span></li>
+            <li><svg class="modele" viewBox="0 0 100 100" aria-hidden="true">
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="currentColor" stroke-width="6"
+                        stroke-linecap="round" stroke-dasharray="240 12" transform="rotate(-90 50 50)" />
+                </svg><span>Goutte d’encre</span></li>
+        </ul>
+        <p>Trace l’un de ces gestes, en un seul trait pour le cercle. Échap pour quitter.</p>
+    </div>
+    <div id="msg-geste" role="status"></div>
 </body>
 
 </html>

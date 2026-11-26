@@ -1,0 +1,86 @@
+@use "sass:map";
+@use '../abstracts/variables' as *;
+
+.btn {
+    cursor: pointer;
+    padding: 8px 16px;
+    text-transform: uppercase;
+    border: 0;
+
+    & a {
+        text-decoration: none;
+    }
+
+    &--wb {
+        font: inherit;
+        font-size: .8rem;
+        letter-spacing: .15em;
+        background: $color-background-button;
+        color: $color-text;
+        border: 1px solid $color-dark-background;
+        transition: background .2s, color .2s;
+
+        & a {
+            color: $color-text;
+        }
+    }
+
+    &--ds {
+        position: relative;
+        isolation: isolate;
+        background: none;
+        transition: transform .15s;
+        // le bouton lui-même porte la police et la couleur (le texte n'est pas forcément dans un <a>)
+        font: 600 1rem $f-texte;
+        color: $texte-clair;
+        text-transform: none; // annule le « uppercase » de .btn
+
+        &:active {
+            transform: translateY(2px) scale(.98);
+        }
+
+        &:focus-visible {
+            outline: 2px solid var(--celadon);
+            outline-offset: 3px;
+        }
+
+        // fond rouge au bord irrégulier
+        &::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: var(--cinabre);
+            filter: url(#rough);
+        }
+
+        // couche de peinture qui balaie le bouton au survol
+        .peint {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: $cinabre-fonce;
+            filter: url(#rough);
+            clip-path: $peint-ferme;
+            transition: clip-path .6s cubic-bezier(.3, .6, .3, 1);
+        }
+
+        &:hover .peint,
+        &:focus-visible .peint {
+            clip-path: $peint-ouvert;
+        }
+
+        & a {
+            font: inherit;
+            color: inherit;
+        }
+    }
+}
+
+$papier-clair: map.get(map.get($themes, clair), papier);
+
+#btn-dessin a {
+    color: $papier-clair;
+    text-decoration: none;
+}

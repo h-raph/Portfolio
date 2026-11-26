@@ -21,10 +21,12 @@
     $tex: $f, $g;
     $tex-o: .4;
     margin: 0;
-    background: $papier;
-    color: $encre;
+    // couleurs themables : elles suivent data-theme (voir _dsDark.scss)
+    background-color: var(--papier2);
+    color: var(--encre);
     font: 400 1.02rem/1.8 $f-texte;
-    background-image: radial-gradient(circle at 12% 8%, rgba(125, 131, 127, .16), transparent 38%), radial-gradient(circle at 90% 70%, rgba(95, 133, 128, .12), transparent 40%);
+    background-image: radial-gradient(circle at 12% 8%, rgba(125, 131, 127, .16), transparent 38%),
+        radial-gradient(circle at 90% 70%, rgba(95, 133, 128, .12), transparent 40%);
 
     &::before {
         content: "";
@@ -34,7 +36,7 @@
         z-index: 10;
         background-image: $tex;
         opacity: $tex-o;
-        mix-blend-mode: multiply
+        mix-blend-mode: multiply;
     }
 }
 
@@ -44,7 +46,7 @@
     height: 100%;
     pointer-events: none;
     z-index: 14;
-    opacity: 0.24;
+    opacity: 0.5;
     inset: 0px;
 }
 
@@ -61,6 +63,5 @@
         inset: 0 0 auto;
         z-index: 46;
         background: $card;
-        height: env(safe-area-inset-top, 0px);
     }
 }

@@ -84,7 +84,6 @@
 .ds-header {
     position: sticky;
     z-index: 6;
-    background: $papier;
     padding-top: 1rem;
 
     &::after {
@@ -94,7 +93,7 @@
         right: 0;
         bottom: -5px;
         height: 9px;
-        background: $encre;
+        background: var(--encre);
         filter: url(#rough);
         pointer-events: none;
         clip-path: polygon(0 50%, 8% 25%, 30% 45%, 55% 20%, 80% 50%, 100% 40%, 97% 75%, 70% 60%, 42% 85%, 15% 70%)
@@ -108,7 +107,7 @@
             bottom: -1px;
             height: 8px;
             width: 0;
-            background: $cinabre;
+            background: var(--cinabre);
             filter: url(#rough);
             clip-path: polygon(0 60%, 4% 25%, 40% 40%, 75% 20%, 100% 45%, 96% 80%, 60% 65%, 20% 90%);
             transition: width .35s ease

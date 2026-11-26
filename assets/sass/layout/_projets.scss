@@ -165,19 +165,6 @@ nav button.on::before {
     flex-wrap: wrap
 }
 
-.bar button {
-    font: inherit;
-    font-size: .8rem;
-    letter-spacing: .15em;
-    text-transform: uppercase;
-    background: $color-background-button;
-    color: $color-text;
-    border: 1px solid $color-dark-background;
-    padding: 8px 16px;
-    cursor: pointer;
-    transition: background .2s, color .2s
-}
-
 .bar button:hover {
     background: $color-dark-background;
     color: $color-background-secondary

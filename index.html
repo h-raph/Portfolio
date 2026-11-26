@@ -7,55 +7,113 @@
     <title>Accueil</title>
     <link rel="stylesheet" href="./assets/css/mainStyle.css"> <!--Style commun à toute les pages-->
 
+    <!-- FONT POUR LE BOUTON DESIGN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600&family=Zhi+Mang+Xing&display=swap"
+        rel="stylesheet">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link
         href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Nunito:wght@400;600;800&family=Caveat:wght@600&display=swap"
         rel="stylesheet">
 
-    <script src="./assets/js/pageAccueil.js" defer></script>
+    <script src="./assets/js/loadingScreen.js"></script>
 </head>
 
 <body class="ac-body">
-    <div class="leaves" aria-hidden="true">
-        <svg style="left:6%;color:#d9742b;animation-duration:17s,4s;animation-delay:-3s,-1s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:16%;width:18px;height:18px;color:#b5402a;animation-duration:21s,5s;animation-delay:-12s,-2s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:27%;width:28px;height:28px;color:#e6a23c;animation-duration:19s,4.5s;animation-delay:-7s,-3s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:38%;width:20px;height:20px;color:#c9503c;animation-duration:15s,3.5s;animation-delay:-1s,0s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:49%;color:#9a5a2b;animation-duration:23s,5s;animation-delay:-16s,-2s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:59%;width:26px;height:26px;color:#d9742b;animation-duration:18s,4s;animation-delay:-9s,-1s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:70%;width:18px;height:18px;color:#e6a23c;animation-duration:16s,3s;animation-delay:-5s,-2s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:80%;color:#b5402a;animation-duration:22s,5s;animation-delay:-14s,-3s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:90%;width:20px;height:20px;color:#d9742b;animation-duration:20s,4s;animation-delay:-8s,0s">
-            <use href="#leaf" />
-        </svg>
-        <svg style="left:96%;width:28px;height:28px;color:#c9503c;animation-duration:24s,5.5s;animation-delay:-19s,-1s">
-            <use href="#leaf" />
-        </svg>
+    <div class="loading-ecran" aria-hidden="true">
+        <div class="container">
+            <div class="progress-bar" data-label="Loading..." style="--width: 10"></div>
+        </div>
     </div>
 
-    <header class="ac-header header">
-        <nav class="header__nav">
-            <a href="index.html" class="ac-header__link header__link is-active">Accueil</a>
-            <a href="./pages/pageDesign.html" class="ac-header__link header__link">Design</a>
-            <a href="./pages/pageWebDev.html" class="ac-header__link header__link">Web/Data</a>
-        </nav>
-    </header>
+        <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+            <symbol id="leaf" viewBox="0 0 40 40">
+                <path d="M20 2C32 8 38 20 20 38 2 20 8 8 20 2z" fill="currentColor" />
+                <path d="M20 8V38M20 20l7-6M20 26l-7-6" stroke="rgba(0,0,0,.28)" stroke-width="1.6" fill="none"
+                    stroke-linecap="round" />
+            </symbol>
+        </svg>
+
+        <!-- Filtre qui donne le bord irrégulier (à mettre une fois dans la page) -->
+        <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+            <filter id="rough">
+                <feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="3" result="n" />
+                <feDisplacementMap in="SourceGraphic" in2="n" scale="5" />
+            </filter>
+        </svg>
+
+        <div class="leaves" aria-hidden="true">
+            <svg style="left:6%;color:#d9742b;animation-duration:17s,4s;animation-delay:-3s,-1s">
+                <use href="#leaf" />
+            </svg>
+            <svg
+                style="left:16%;width:18px;height:18px;color:#b5402a;animation-duration:21s,5s;animation-delay:-12s,-2s">
+                <use href="#leaf" />
+            </svg>
+            <svg
+                style="left:27%;width:28px;height:28px;color:#e6a23c;animation-duration:19s,4.5s;animation-delay:-7s,-3s">
+                <use href="#leaf" />
+            </svg>
+            <svg
+                style="left:38%;width:20px;height:20px;color:#c9503c;animation-duration:15s,3.5s;animation-delay:-1s,0s">
+                <use href="#leaf" />
+            </svg>
+            <svg style="left:49%;color:#9a5a2b;animation-duration:23s,5s;animation-delay:-16s,-2s">
+                <use href="#leaf" />
+            </svg>
+            <svg
+                style="left:59%;width:26px;height:26px;color:#d9742b;animation-duration:18s,4s;animation-delay:-9s,-1s">
+                <use href="#leaf" />
+            </svg>
+            <svg
+                style="left:70%;width:18px;height:18px;color:#e6a23c;animation-duration:16s,3s;animation-delay:-5s,-2s">
+                <use href="#leaf" />
+            </svg>
+            <svg style="left:80%;color:#b5402a;animation-duration:22s,5s;animation-delay:-14s,-3s">
+                <use href="#leaf" />
+            </svg>
+            <svg style="left:90%;width:20px;height:20px;color:#d9742b;animation-duration:20s,4s;animation-delay:-8s,0s">
+                <use href="#leaf" />
+            </svg>
+            <svg
+                style="left:96%;width:28px;height:28px;color:#c9503c;animation-duration:24s,5.5s;animation-delay:-19s,-1s">
+                <use href="#leaf" />
+            </svg>
+        </div>
+
+        <main>
+            <section class="grid">
+                <div class="col-6">
+                    <h1>À propos de moi</h1>
+                    <p>
+                        Bonjour, je m'appelle BANQUETTI Raphaël j'ai 22 ans, actuellement étudiant à La Manu en bachelor
+                        Développement d'IA & Data.
+                        Si vous visitez mon Portfolio c'est que vous portez un intérêt dans ce que je produis, je vous
+                        remercie donc pour le temps que vous consacrez à mes travaux.
+                    </p>
+                </div>
+
+                <div class="col-6">
+                    [placer quelque chose ici plus tard. une photo ou autre chose]
+                </div>
+            </section>
+
+            <section>
+                <h2>Ici vous pourrez voir mes travaux en Développement Web que j'ai réalisé en cours et de mon côté.
+                </h2>
+
+                <p><em>faire une animation pour ouvrir une zone dans la DA de NieR et pas sur autre une page</em></p>
+
+                <button class="btn btn--wb"><a href="./pages/pageWebDev.html">La page WEB</a></button>
+            </section>
+
+        </main>
+
+        <button id="btn-dessin" type="button" aria-pressed="false" aria-label="Dessiner un geste"
+            title="Dessiner un geste"><span aria-hidden="true"><a href="./pages/pageDesign.html">筆</a></span></button>
 </body>
 
 </html>

@@ -65,8 +65,8 @@
 
 .ds-body {
   margin: 0;
-  background: #f5f3ec;
-  color: #22262b;
+  background-color: var(--papier2);
+  color: var(--encre);
   font: 400 1.02rem/1.8 "Noto Serif SC", Georgia, serif;
   background-image: radial-gradient(circle at 12% 8%, rgba(125, 131, 127, 0.16), transparent 38%), radial-gradient(circle at 90% 70%, rgba(95, 133, 128, 0.12), transparent 40%);
 }
@@ -87,7 +87,7 @@
   height: 100%;
   pointer-events: none;
   z-index: 14;
-  opacity: 0.24;
+  opacity: 0.5;
   inset: 0px;
 }
 
@@ -104,7 +104,6 @@
   inset: 0 0 auto;
   z-index: 46;
   background: #f7e8d6;
-  height: env(safe-area-inset-top, 0px);
 }
 
 *, *::before, *::after {
@@ -187,7 +186,6 @@
 .ds-header {
   position: sticky;
   z-index: 6;
-  background: #f5f3ec;
   padding-top: 1rem;
 }
 .ds-header::after {
@@ -197,7 +195,7 @@
   right: 0;
   bottom: -5px;
   height: 9px;
-  background: #22262b;
+  background: var(--encre);
   filter: url(#rough);
   pointer-events: none;
   clip-path: polygon(0 50%, 8% 25%, 30% 45%, 55% 20%, 80% 50%, 100% 40%, 97% 75%, 70% 60%, 42% 85%, 15% 70%);
@@ -209,7 +207,7 @@
   bottom: -1px;
   height: 8px;
   width: 0;
-  background: #b3302a;
+  background: var(--cinabre);
   filter: url(#rough);
   clip-path: polygon(0 60%, 4% 25%, 40% 40%, 75% 20%, 100% 45%, 96% 80%, 60% 65%, 20% 90%);
   transition: width 0.35s ease;
@@ -409,19 +407,6 @@ nav button.on::before {
   flex-wrap: wrap;
 }
 
-.bar button {
-  font: inherit;
-  font-size: 0.8rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  background: #bab5a1;
-  color: #454138;
-  border: 1px solid #454138;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background 0.2s, color 0.2s;
-}
-
 .bar button:hover {
   background: #454138;
   color: #dcd8c0;
@@ -570,6 +555,207 @@ nav button.on::before {
     transition-duration: 0.01s !important;
   }
 }
+/* mode dessin et reconnaissance de gestes */
+[hidden] {
+  display: none !important;
+}
+
+#btn-dessin {
+  position: fixed;
+  right: 1rem;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 25;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: var(--encre);
+  color: var(--papier);
+  font: 400 1.7rem/1 "Ma Shan Zheng", "Cormorant Garamond", serif;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
+}
+
+#btn-dessin[aria-pressed=true] {
+  background: var(--cinabre);
+  color: #f3eee0;
+}
+
+.ds-body.dessin #pinceau {
+  pointer-events: auto;
+  touch-action: none;
+  cursor: crosshair;
+  opacity: 0.85;
+}
+
+#aide-dessin {
+  position: fixed;
+  left: 50%;
+  bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  width: min(94vw, 36rem);
+  z-index: 25;
+  pointer-events: none;
+  padding: 0.9rem 1.1rem 1rem;
+  background: color-mix(in srgb, var(--papier2) 94%, transparent);
+  color: var(--encre);
+  border-left: 6px solid var(--cinabre);
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.modeles {
+  list-style: none;
+  margin: 0 0 0.5rem;
+  padding: 0;
+  display: flex;
+  justify-content: space-around;
+  gap: 0.8rem;
+}
+
+.modeles li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.modele {
+  display: block;
+  width: clamp(4rem, 18vw, 6.5rem);
+  height: clamp(4rem, 18vw, 6.5rem);
+  font: 400 clamp(3.8rem, 17vw, 6.2rem)/1 "Ma Shan Zheng", "Cormorant Garamond", serif;
+  text-align: center;
+  color: var(--encre);
+}
+
+#aide-dessin p {
+  margin: 0;
+}
+
+#msg-geste {
+  position: fixed;
+  left: 50%;
+  top: calc(5rem + env(safe-area-inset-top, 0px));
+  transform: translate(-50%, -200%);
+  z-index: 25;
+  padding: 0.7rem 1.4rem;
+  background: var(--encre);
+  color: var(--papier);
+  transition: transform 0.4s;
+}
+
+#msg-geste.on {
+  transform: translate(-50%, 0);
+}
+
+.tampon {
+  position: fixed;
+  z-index: 26;
+  pointer-events: none;
+  width: 3.4rem;
+  height: 3.4rem;
+  display: grid;
+  place-items: center;
+  background: var(--cinabre);
+  color: #f3eee0;
+  font: 400 2.2rem/1 "Ma Shan Zheng", "Cormorant Garamond", serif;
+  filter: url(#rough);
+  animation: tampon 1.8s ease-out forwards;
+}
+
+@keyframes tampon {
+  0% {
+    transform: scale(1.8) rotate(-8deg);
+    opacity: 0;
+  }
+  15% {
+    transform: scale(1) rotate(-4deg);
+    opacity: 1;
+  }
+  80% {
+    transform: scale(1) rotate(-4deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(-4deg);
+    opacity: 0;
+  }
+}
+.encrage {
+  position: fixed;
+  z-index: 30;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: scale(0);
+  transition: transform 0.8s cubic-bezier(0.5, 0, 0.3, 1), opacity 0.6s;
+}
+
+.gouttelette {
+  position: fixed;
+  z-index: 15;
+  border-radius: 50%;
+  pointer-events: none;
+  background: var(--encre);
+  filter: url(#rough);
+  animation: pop 0.45s cubic-bezier(0.2, 1.6, 0.4, 1) both, fondre 0.6s ease-in forwards;
+}
+
+@keyframes pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes fondre {
+  to {
+    opacity: 0;
+  }
+}
+.loading-ecran {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  display: grid;
+  place-items: center;
+  background-color: #ecd5bd;
+  color: var(--encre, #1d2023);
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.loading-ecran.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.progress-bar {
+  position: relative;
+  width: 500px;
+  height: 3em;
+  background-color: #111;
+  color: white;
+  border-radius: 1.5em;
+}
+.progress-bar::before {
+  content: attr(data-label);
+  position: absolute;
+  display: flex;
+  align-items: center;
+  left: 0.5em;
+  top: 0.5em;
+  bottom: 0.5em;
+  width: calc(var(--width, 0) * 1%);
+  min-width: 2rem;
+  max-width: calc(100% - 1em);
+  background-color: #069;
+  border-radius: 1em;
+  padding: 1em;
+}
+
 /* feuilles qui tombent */
 .leaves {
   position: fixed;
@@ -609,7 +795,7 @@ nav button.on::before {
   border-radius: 50%;
   pointer-events: none;
   z-index: 15;
-  background: radial-gradient(circle, rgba(34, 38, 43, 0.85) 0 36%, rgba(34, 38, 43, 0.4) 54%, transparent 72%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--encre) 85%, transparent) 0 36%, color-mix(in srgb, var(--encre) 40%, transparent) 54%, transparent 72%);
   filter: url(#rough);
   animation: splash 2.4s ease-out forwards;
 }
@@ -628,6 +814,74 @@ nav button.on::before {
     opacity: 0;
   }
 }
+.btn {
+  cursor: pointer;
+  padding: 8px 16px;
+  text-transform: uppercase;
+  border: 0;
+}
+.btn a {
+  text-decoration: none;
+}
+.btn--wb {
+  font: inherit;
+  font-size: 0.8rem;
+  letter-spacing: 0.15em;
+  background: #bab5a1;
+  color: #454138;
+  border: 1px solid #454138;
+  transition: background 0.2s, color 0.2s;
+}
+.btn--wb a {
+  color: #454138;
+}
+.btn--ds {
+  position: relative;
+  isolation: isolate;
+  background: none;
+  transition: transform 0.15s;
+  font: 600 1rem "Noto Serif SC", Georgia, serif;
+  color: #f3eee0;
+  text-transform: none;
+}
+.btn--ds:active {
+  transform: translateY(2px) scale(0.98);
+}
+.btn--ds:focus-visible {
+  outline: 2px solid var(--celadon);
+  outline-offset: 3px;
+}
+.btn--ds::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--cinabre);
+  filter: url(#rough);
+}
+.btn--ds .peint {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: #86221d;
+  filter: url(#rough);
+  clip-path: polygon(0% 0%, 0% 0%, 0% 12%, 0% 25%, 0% 37%, 0% 50%, 0% 62%, 0% 75%, 0% 87%, 0% 100%, 0% 100%);
+  transition: clip-path 0.6s cubic-bezier(0.3, 0.6, 0.3, 1);
+}
+.btn--ds:hover .peint, .btn--ds:focus-visible .peint {
+  clip-path: polygon(0% 0%, 100% 0%, 103% 12%, 99% 25%, 104% 37%, 100% 50%, 102% 62%, 98% 75%, 103% 87%, 100% 100%, 0% 100%);
+}
+.btn--ds a {
+  font: inherit;
+  color: inherit;
+}
+
+#btn-dessin a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
 .wb-header .is-active {
   background-color: transparent;
   color: #dcd8c0;
@@ -645,6 +899,27 @@ nav button.on::before {
 
 .ds-header .is-active::after {
   width: 100%;
+}
+
+:root,
+html[data-theme=clair] {
+  --papier: #ffffff;
+  --papier2: #f4f4f4;
+  --encre: #1d2023;
+  --lavis: #6e736e;
+  --cinabre: #d4574d;
+  --celadon: #5c857f;
+  color-scheme: light;
+}
+
+html[data-theme=sombre] {
+  --papier: #1d2023;
+  --papier2: #272b2f;
+  --encre: #e6e1d2;
+  --lavis: #8f948f;
+  --cinabre: #d4574d;
+  --celadon: #7fa6a0;
+  color-scheme: dark;
 }
 
 /*# sourceMappingURL=mainStyle.css.map */

@@ -5,24 +5,28 @@
     border-radius: 50%;
     pointer-events: none;
     z-index: 15;
-    background: radial-gradient(circle, rgba(34, 38, 43, .85) 0 36%, rgba(34, 38, 43, .4) 54%, transparent 72%);
+    // l'encre suit le thème (sombre sur papier clair, claire sur papier sombre)
+    background: radial-gradient(circle,
+            color-mix(in srgb, var(--encre) 85%, transparent) 0 36%,
+            color-mix(in srgb, var(--encre) 40%, transparent) 54%,
+            transparent 72%);
     filter: url(#rough);
-    animation: splash 2.4s ease-out forwards
+    animation: splash 2.4s ease-out forwards;
 }
 
 @keyframes splash {
     0% {
         transform: scale(.1);
-        opacity: .95
+        opacity: .95;
     }
 
     22% {
         transform: scale(1.5);
-        opacity: .8
+        opacity: .8;
     }
 
     100% {
         transform: scale(2.3);
-        opacity: 0
+        opacity: 0;
     }
 }

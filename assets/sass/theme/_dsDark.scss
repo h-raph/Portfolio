@@ -1,0 +1,26 @@
+@use 'sass:map';
+@use '../abstracts/variables' as *;
+
+// Une seule définition des thèmes. Elle génère des variables CSS (--papier, --encre…),
+// qui peuvent changer à l'exécution, contrairement aux variables Sass ($papier…).
+
+
+@mixin theme-vars($nom) {
+    @each $cle, $valeur in map.get($themes, $nom) {
+        --#{$cle}: #{$valeur};
+    }
+}
+
+// Sélecteurs sans « html » : n'importe quel élément peut porter data-theme
+// (le JS s'en sert pour colorer la vague d'encre avec le thème visé).
+:root,
+html[data-theme="clair"] {
+    @include theme-vars(clair);
+    color-scheme: light;
+}
+
+// doit rester après le thème clair : même spécificité, c'est le dernier qui gagne
+html[data-theme="sombre"] {
+    @include theme-vars(sombre);
+    color-scheme: dark;
+}
